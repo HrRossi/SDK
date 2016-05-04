@@ -6,6 +6,7 @@
 #include "FoveTypes.h"
 #include "IFVRHeadset.h"
 #include "IFVRCompositor.h"
+#include "LogManager.h"
 
 
 int main(int argc, char* argv)
@@ -18,19 +19,6 @@ int main(int argc, char* argv)
 		std::cout << "failed to init client" << std::endl;
 		getchar();
 		return 1;
-	}
-
-	// Using Tare Orientation Sensor
-	// The sensor's reading may differ from the actual orientation of the device by a constant angle until
-	//		it has been given a reference orientation
-	// TareOrientationSensor() function sets the sensor orientation to zero orientation
-	if (hInstance->TareOrientationSensor())
-	{
-		std::cout << "Successfully set the Tared the sensor" << std::endl;
-	}
-	else
-	{
-		std::cout << "Unable to Tare the sensor" << std::endl;
 	}
 
 	// Check if we have detected Fove Hardware
@@ -49,6 +37,19 @@ int main(int argc, char* argv)
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 
+	// Using Tare Orientation Sensor
+	// The sensor's reading may differ from the actual orientation of the device by a constant angle until
+	//		it has been given a reference orientation
+	// TareOrientationSensor() function sets the sensor orientation to zero orientation
+	if (hInstance->TareOrientationSensor())
+	{
+		std::cout << "Successfully set the Tared the sensor" << std::endl;
+	}
+	else
+	{
+		std::cout << "Unable to Tare the sensor" << std::endl;
+	}
+
 	// Setup the Compositor, get the Instance of the Compositor
 	Fove::IFVRCompositor* cInstance = Fove::GetFVRCompositor();
 
@@ -62,7 +63,7 @@ int main(int argc, char* argv)
 
 	// If this is set to true, the compositor will also render the textures to a window on your primary monitor.
 	//		This allows you to see what the headset is displaying without putting it on (for debug and demo).
-	cInstance->ShowMirrorWindow(true);
+	//cInstance->ShowMirrorWindow(true);
 
 	// Main loop to play with the VR
 	// Press ESC to quit Application
@@ -82,7 +83,7 @@ int main(int argc, char* argv)
 
 		// GetOrientation returns the users head orientation on Fove VR
 		Fove::SFVR_HeadOrientation ho = hInstance->GetOrientation();
-		if (ho.hasError)
+		if (ho.error != Fove::EFVR_ErrorCode::None)
 		{
 			// Retrieve the last error generated in the runtime
 			std::cout << (int)hInstance->GetLastError() << std::endl;
@@ -100,7 +101,7 @@ int main(int argc, char* argv)
 		// this function will be deprecated in v0.5.0 in favour of GetGazeVector
 		Fove::SFVR_GazeScreenCoord gp = hInstance->GetGazePoint();
 		
-		if (gp.hasError)
+		if (gp.error != Fove::EFVR_ErrorCode::None)
 		{
 			// Retrieve the last error generated in the runtime
 			std::cout << (int)hInstance->GetLastError() << std::endl;

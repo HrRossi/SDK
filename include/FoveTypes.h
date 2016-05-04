@@ -13,6 +13,45 @@ using std::uint64_t;
 namespace Fove
 {
 	/*
+	EFVR_ErrorCode enum
+	An enum of error codes that the system may return from GetLastError(). These will eventually be mapped to localised strings.
+	*/
+	enum class EFVR_ErrorCode
+	{
+		None = 0,
+
+		// connection errors
+		Connection_General = 1,
+		Connect_NotConnected = 7,
+		Connect_ServerUnreachable = 2,
+		Connect_RegisterFailed = 3,
+		Connect_DeregisterFailed = 6,
+		Connect_WrongRuntimeVersion = 4,
+		Connect_HeartbeatNoReply = 5,
+
+		// data errors
+		Data_General = 10,
+		Data_RegisteredWrongVersion = 11,
+		Data_UnreadableNotFound = 12,
+		Data_NoUpdate = 13,
+
+		// hardware errors
+		Hardware_General = 20,
+		Hardware_CoreFault = 21,
+		Hardware_CameraFault = 22,
+		Hardware_IMUFault = 23,
+		Hardware_ScreenFault = 24,
+		Hardware_SecurityFault = 25,
+
+		// server response errors
+		Server_General = 30,
+		Server_HardwareInterfaceInvalid = 31,
+		Server_HeartbeatNotRegistered = 32,
+		Server_DataCreationError = 33,
+		Server_ModuleError_ET = 34
+	};
+
+	/*
 	EFVR_DataType enum
 	The different data types that are passed internally within the FoveVR system.
 	Clients can subscribe to these (the default is to subscribe all at the moment).
@@ -51,7 +90,7 @@ namespace Fove
 	*/
 	struct SFVR_HeadOrientation
 	{
-		bool hasError;
+		EFVR_ErrorCode error = EFVR_ErrorCode::None;
 		uint64_t id;
 		uint64_t timestamp;
 		SFVR_Quaternion quat;
@@ -92,7 +131,7 @@ namespace Fove
 	*/
 	struct SFVR_Pose
 	{
-		bool hasError;
+		EFVR_ErrorCode error = EFVR_ErrorCode::None;
 		uint64_t id;
 		uint64_t timestamp;
 		SFVR_Quaternion orientation;
@@ -108,7 +147,7 @@ namespace Fove
 	*/
 	struct SFVR_GazeVector
 	{
-		bool hasError;
+		EFVR_ErrorCode error = EFVR_ErrorCode::None;
 		uint64_t id;
 		uint64_t timestamp;
 		float accuracy;
@@ -125,7 +164,7 @@ namespace Fove
 	*/
 	struct SFVR_GazeScreenCoord
 	{
-		bool hasError;
+		EFVR_ErrorCode error = EFVR_ErrorCode::None;
 		uint64_t id;
 		uint64_t timestamp;
 		SFVR_Vec2 coord;
@@ -137,7 +176,7 @@ namespace Fove
 	*/
 	struct SFVR_EyeImage
 	{
-		bool hasError = true;
+		EFVR_ErrorCode error = EFVR_ErrorCode::None;
 		uint8_t eye;
 		uint64_t frameNumber;
 		uint32_t length;
@@ -174,42 +213,6 @@ namespace Fove
 	struct SFVR_Matrix34
 	{
 		float mat[3][4];
-	};
-
-	/*
-	EFVR_ErrorCode enum
-	An enum of error codes that the system may return from GetLastError(). These will eventually be mapped to localised strings.
-	*/
-	enum class EFVR_ErrorCode
-	{
-		None = 0,
-
-		// connection errors
-		Connection_General = 1,
-		Connect_ServerUnreachable = 2,
-		Connect_RegisterFailed = 3,
-		Connect_DeregisterFailed = 6,
-		Connect_WrongRuntimeVersion = 4,
-		Connect_HeartbeatNoReply = 5,
-
-		// data errors
-		Data_General = 10,
-		Data_RegisteredWrongVersion = 11,
-		Data_UnreadableNotFound = 12,
-		Data_NoUpdate = 13,
-
-		// hardware errors
-		Hardware_General = 20,
-		Hardware_CoreFault = 21,
-		Hardware_CameraFault = 22,
-		Hardware_IMUFault = 23,
-		Hardware_ScreenFault = 24,
-		Hardware_SecurityFault = 25,
-
-		// server response errors
-		Server_General = 30,
-		Server_HardwareInterfaceInvalid = 31,
-		Server_HeartbeatNotRegistered = 32
 	};
 
 	enum class EFVR_CompositorError
