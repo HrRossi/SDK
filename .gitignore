@@ -1,3 +1,12 @@
-!bin/win64/*.dll
-!bin/win64/*.exe
-!lib/win64/*.lib
+!/msvc12/win64/bin/*.dll
+!/msvc12/win64/bin/*.exe
+!/msvc12/win64/lib/*.lib
+!/msvc12/win32/bin/*.dll
+!/msvc12/win32/bin/*.exe
+!/msvc12/win32/lib/*.lib
+!/msvc14/win64/bin/*.dll
+!/msvc14/win64/bin/*.exe
+!/msvc14/win64/lib/*.lib
+!/msvc14/win32/bin/*.dll
+!/msvc14/win32/bin/*.exe
+!/msvc14/win32/lib/*.lib
