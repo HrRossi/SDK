@@ -45,6 +45,7 @@ namespace Fove
 		Data_RegisteredWrongVersion = 11,
 		Data_UnreadableNotFound = 12,
 		Data_NoUpdate = 13,
+		Data_Uncalibrated = 14,
 
 		//! Hardware Errors
 		Hardware_General = 20,

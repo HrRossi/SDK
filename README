@@ -1,4 +1,16 @@
-This distribution allows application developers to create software and games that use the Fove HMD. It is a work in progress and while we will do our best to not introduce breaking changes, sometimes this is inevitable in the software lifetime development cycle.
+This distribution allows application developers to create software and games that use the Fove HMD.
+It is a work in progress and while we will do our best to not introduce breaking changes, sometimes this is inevitable in the software lifetime development cycle.
 Documentation is available on the wiki at https://github.com/FoveHMD/SDK/wiki and is also a work in progress.
 
 If you've found this and don't know who we are or why we're here please check out http://www.getfove.com/
+
+0.4.3.A
+
+Fixes:
+	- Increased runtime stability when plugging/unplugging headset
+	- New Firmware (v22) support
+	- Improved render state management for Compositor
+	- Workaround for Windows display handling issues on some systems
+	- Orientation improvements
+Features:
+	(none)
