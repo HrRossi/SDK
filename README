@@ -20,6 +20,7 @@ If you've found this and don't know who we are or why we're here please check ou
 
 - Barrel distortion changes
 - Position tracking enabling
+- Gyro calibration fixes for newer firmware (v23)
 
 0.5.0A
 
@@ -32,7 +33,7 @@ If you've found this and don't know who we are or why we're here please check ou
 0.4.3A
 
 - Increased runtime stability when plugging/unplugging headset
-- New Firmware (v22) support
+- New firmware support (v22)
 - Improved render state management for Compositor
 - Workaround for Windows display handling issues on some systems
 - Orientation improvements
