@@ -4,13 +4,35 @@ Documentation is available on the wiki at https://github.com/FoveHMD/SDK/wiki an
 
 If you've found this and don't know who we are or why we're here please check out http://www.getfove.com/
 
-0.4.3.A
+0.6.0A
 
-Fixes:
-	- Increased runtime stability when plugging/unplugging headset
-	- New Firmware (v22) support
-	- Improved render state management for Compositor
-	- Workaround for Windows display handling issues on some systems
-	- Orientation improvements
-Features:
-	(none)
+- New Bitmaps to reduce crashing
+- Bugfixes
+- Efficiency improvements
+- NVIDIA Direct Mode fixes
+- Position tracking improvements
+- New firmware support (v25)
+- Asynchronous Time Warp
+- Added CheckRuntimeVersion() function (returns EFVR_ErrorCode::Connect_WrongRuntimeVersion if incorrect)
+- Fixed hidapi.dll linking
+
+0.5.0B
+
+- Barrel distortion changes
+- Position tracking enabling
+
+0.5.0A
+
+- NVIDIA Direct Mode
+
+0.4.3B
+
+
+
+0.4.3A
+
+- Increased runtime stability when plugging/unplugging headset
+- New Firmware (v22) support
+- Improved render state management for Compositor
+- Workaround for Windows display handling issues on some systems
+- Orientation improvements
