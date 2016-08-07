@@ -55,6 +55,7 @@ namespace Fove
 		Hardware_ScreenFault = 24,
 		Hardware_SecurityFault = 25,
 		Hardware_Disconnected = 26,
+		Hardware_WrongFirmwareVersion = 27,
 
 		//! Server Response Errors
 		Server_General = 30,
@@ -65,7 +66,14 @@ namespace Fove
 
 		//! Code and placeholders
 		Code_NotImplementedYet = 40,
-		Code_FunctionDepricated = 41
+		Code_FunctionDepricated = 41,
+
+		//! Position Tracking
+		Position_NoObjectsInView = 50,
+		Position_NoDlibRegressor = 51,
+		Position_NoCascadeClassifier = 52,
+		Position_NoModel = 53,
+		Position_NoImages = 54
 	};
 
 	//! EFVR_DataType enum
@@ -79,7 +87,8 @@ namespace Fove
 		Position = 2,
 		Gaze = 3,
 		ImageData = 4,
-		Message = 5
+		Message = 5,
+		PositionImage = 6
 	};
 
 	//! SFVR_Quaternion struct
@@ -92,6 +101,39 @@ namespace Fove
 		float w = 1;
 
 		SFVR_Quaternion(float ix, float iy, float iz, float iw) : x(ix), y(iy), z(iz), w(iw) {}
+
+		//! Generate and return a conjugate of this quaternion
+		SFVR_Quaternion Conjugate() const
+		{
+			return SFVR_Quaternion(-x, -y, -z, w);
+		}
+
+		SFVR_Quaternion Normalize() const
+		{
+			float d = sqrtf(w*w + x*x + y*y + z*z);
+			SFVR_Quaternion result(x / d, y / d, z / d, w / d);
+			return result;
+		}
+
+		//! Return the result of multiplying this quaternion Q1 by another Q2 such that OUT = Q1 * Q2
+		SFVR_Quaternion MultiplyBefore(const SFVR_Quaternion &second) const
+		{
+			auto nx =  x * second.w + y * second.z - z * second.y + w * second.x;
+			auto ny = -x * second.z + y * second.w + z * second.x + w * second.y;
+			auto nz =  x * second.y - y * second.x + z * second.w + w * second.z;
+			auto nw = -x * second.x - y * second.y - z * second.z + w * second.w;
+			return SFVR_Quaternion(nx, ny, nz, nw);
+		}
+
+		//! Return the result of multiplying this quaternion Q2 by another Q1 such that OUT = Q1 * Q2
+		SFVR_Quaternion MultiplyAfter(const SFVR_Quaternion &first) const
+		{
+			auto nx =  first.x * w + first.y * z - first.z * y + first.w * x;
+			auto ny = -first.x * z + first.y * w + first.z * x + first.w * y;
+			auto nz =  first.x * y - first.y * x + first.z * w + first.w * z;
+			auto nw = -first.x * x - first.y * y - first.z * z + first.w * w;
+			return SFVR_Quaternion(nx, ny, nz, nw);
+		}
 	};
 
 	//! SFVR_HeadOrientation struct
@@ -201,7 +243,7 @@ namespace Fove
 		uint64_t frameNumber;
 		uint32_t length;
 		uint64_t timestamp;
-		std::vector<unsigned char> imageData;
+		unsigned char* imageData;
 	};
 
 	//! SFVR_CalibrationTarget struct
@@ -248,6 +290,7 @@ namespace Fove
 		UnableToCreateDeviceAndContext = 100,
 		UnableToUseTexture = 101,
 		DeviceMismatch = 102,
+		IncompatibleCompositorVersion = 103,
 
 		UnableToFindRuntime = 200,
 		RuntimeAlreadyClaimed = 201,
@@ -255,6 +298,8 @@ namespace Fove
 
 		ErrorCreatingShaders = 300,
 		ErrorCreatingTexturesOnDevice = 301,
+
+		NoEyeSpecifiedForSubmit = 400,
 
 		UnknownError = 99999,
 	};

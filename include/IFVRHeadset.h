@@ -3,7 +3,17 @@
 #ifndef _IFVRHEADSET_H
 #define _IFVRHEADSET_H
 
+#ifdef __GNUC__
+#define DEPRECATED(func) func __attribute__ ((deprecated))
+#elif defined(_MSC_VER)
+#define DEPRECATED(func) __declspec(deprecated) func
+#else
+#pragma message("WARNING: You need to implement DEPRECATED for this compiler")
+#define DEPRECATED(func) func
+#endif
+
 #include "FoveTypes.h"
+#include "Defines.h"
 
 namespace Fove
 {
@@ -18,7 +28,8 @@ namespace Fove
 		//! the hardware for their requested capabilities started
 		virtual bool IsHardwareReady() = 0;
 		virtual bool IsHeadsetMounted() = 0;
-		virtual float GetVersion() = 0;
+		virtual DEPRECATED(float GetVersion()) = 0;
+		virtual EFVR_ErrorCode CheckRuntimeVersion() = 0;
 		virtual Fove::EFVR_ErrorCode GetLastError() = 0;
 		
 		//! eye tracking
@@ -28,6 +39,7 @@ namespace Fove
 		virtual bool EnableEyeTracking() = 0;
 		//! temp
 		virtual Fove::SFVR_EyeImage GetFrameData() = 0;
+		virtual Fove::SFVR_EyeImage GetPositionImageData() = 0;
 		//! status
 		virtual bool IsEyeTracking() = 0;
 		virtual bool IsEyeTrackingReady() = 0;
@@ -53,6 +65,7 @@ namespace Fove
 		//! calibration
 		virtual void StartCalibration() = 0;
 		virtual SFVR_CalibrationTarget TickCalibration(float deltaTime) = 0;
+		virtual Fove::EFVR_ErrorCode ManualDriftCorrection(float x, float y, EFVR_Eye eye) = 0;
 
 		//! constructor & destructor
 		virtual ~IFVRHeadset();

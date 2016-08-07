@@ -11,7 +11,12 @@ namespace Fove
 	{
 	public:
 		//!-- Submit a frame to the compositor
-		virtual EFVR_CompositorError Submit(void* pTexture, EFVR_GraphicsAPI api, EFVR_Eye whichEye, SFVR_TextureBounds bounds) = 0;
+		virtual EFVR_CompositorError Submit(
+			void* pTexture,
+			EFVR_GraphicsAPI api,
+			EFVR_Eye whichEye,
+			SFVR_TextureBounds bounds,
+			SFVR_HeadOrientation orientation) = 0;
 		//!-- Set whether or not to show a mirror window of what's being sent to the compositor
 		virtual void ShowMirrorWindow(bool shouldShow) = 0;
 		//!-- Shut down the compositor, making the pointer to this object unusable
