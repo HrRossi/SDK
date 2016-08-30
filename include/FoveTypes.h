@@ -66,14 +66,22 @@ namespace Fove
 
 		//! Code and placeholders
 		Code_NotImplementedYet = 40,
-		Code_FunctionDepricated = 41,
+		Code_FunctionDeprecated = 41,
 
 		//! Position Tracking
 		Position_NoObjectsInView = 50,
 		Position_NoDlibRegressor = 51,
 		Position_NoCascadeClassifier = 52,
 		Position_NoModel = 53,
-		Position_NoImages = 54
+		Position_NoImages = 54,
+		Position_InvalidFile = 55,
+		Position_NoCamParaSet = 56,
+		Position_CantUpdateOptical = 57,
+		Position_ObjectNotTracked = 58,
+		
+		//! Eye Tracking
+		Eye_Left_NoDlibRegressor = 60,
+		Eye_Right_NoDlibRegressor = 61,
 	};
 
 	//! EFVR_DataType enum
@@ -82,13 +90,13 @@ namespace Fove
 	*/
 	enum class EFVR_DataType
 	{
-		HeadsetState = 0,
-		Orientation = 1,
-		Position = 2,
-		Gaze = 3,
-		ImageData = 4,
-		Message = 5,
-		PositionImage = 6
+		HeadsetState = 0,	// headsetState -> SFVR_HeadsetState
+		Orientation = 1,	// headOrientation -> SFVR_HeadOrientation		// deprecated. replaced with Position entirely now (contains orientation AND estimated position)
+		Position = 2,		// pose -> SFVR_Positions						// updated from SFVR_Pose as that had no ability to hold predicted results
+		Gaze = 3,			// gaze -> SFVR_Gaze_2
+		ImageData = 4,		// eyeImage -> SFVR_EyeImage
+		Message = 5,		// message -> char* \0 terminated
+		PositionImage = 6	// posImage -> SFVR_EyeImage
 	};
 
 	//! SFVR_Quaternion struct
@@ -100,6 +108,7 @@ namespace Fove
 		float z = 0;
 		float w = 1;
 
+		SFVR_Quaternion() : x(0.f), y(0.f), z(0.f), w(1.f) {}
 		SFVR_Quaternion(float ix, float iy, float iz, float iw) : x(ix), y(iy), z(iz), w(iw) {}
 
 		//! Generate and return a conjugate of this quaternion
@@ -203,17 +212,21 @@ namespace Fove
 		SFVR_Pose() : orientation(0, 0, 0, 1), position(0, 0, 0){}
 	};
 
-	//! SFVR_GazeVector struct
+	//! SFVR_WorldGaze struct
 	/*! FUTURE USE ONLY: The vector (from the center of the player's head in game space) that represents the point that the user is looking at.
 		The accuracy is the radius of the sphere in meters of this information.
 	*/
-	struct SFVR_GazeVector
+	struct SFVR_WorldGaze
 	{
 		EFVR_ErrorCode error = EFVR_ErrorCode::None;
 		uint64_t id;
 		uint64_t timestamp;
 		float accuracy;
-		SFVR_Vec3 vec;
+		SFVR_Vec3 left_vec;
+		SFVR_Vec3 right_vec;
+		SFVR_Vec3 convergence;
+
+		SFVR_WorldGaze() : left_vec(0, 0, 1), right_vec(0, 0, 1), convergence(0, 0, 1) {}
 	};
 
 	//! SFVR_GazeScreenCoord struct

@@ -1,2 +1,0 @@
-sc delete "FoveRuntime"
-pause

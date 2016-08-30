@@ -4,16 +4,15 @@
 #define _IFVRHEADSET_H
 
 #ifdef __GNUC__
-#define DEPRECATED(func) func __attribute__ ((deprecated))
+#define FVR_DEPRECATED(func) func __attribute__ ((deprecated))
 #elif defined(_MSC_VER)
-#define DEPRECATED(func) __declspec(deprecated) func
+#define FVR_DEPRECATED(func) __declspec(deprecated) func
 #else
 #pragma message("WARNING: You need to implement DEPRECATED for this compiler")
-#define DEPRECATED(func) func
+#define FVR_DEPRECATED(func) func
 #endif
 
 #include "FoveTypes.h"
-#include "Defines.h"
 
 namespace Fove
 {
@@ -28,15 +27,19 @@ namespace Fove
 		//! the hardware for their requested capabilities started
 		virtual bool IsHardwareReady() = 0;
 		virtual bool IsHeadsetMounted() = 0;
-		virtual DEPRECATED(float GetVersion()) = 0;
+		// Deprecated in v0.6.1 released 29th Aug 2016
+		virtual FVR_DEPRECATED(float GetVersion()) = 0;
 		virtual EFVR_ErrorCode CheckRuntimeVersion() = 0;
 		virtual Fove::EFVR_ErrorCode GetLastError() = 0;
 		
 		//! eye tracking
 		virtual Fove::SFVR_GazeScreenCoord GetGazePoint() = 0;
+		virtual Fove::SFVR_WorldGaze GetWorldGaze() = 0;
 		//! start and stop the subsystem
-		virtual bool DisableEyeTracking() = 0;
-		virtual bool EnableEyeTracking() = 0;
+		// Deprecated in v0.6.1 released 29th Aug 2016
+		virtual bool FVR_DEPRECATED(DisableEyeTracking()) = 0;
+		// Deprecated in v0.6.1 released 29th Aug 2016
+		virtual bool FVR_DEPRECATED(EnableEyeTracking()) = 0;
 		//! temp
 		virtual Fove::SFVR_EyeImage GetFrameData() = 0;
 		virtual Fove::SFVR_EyeImage GetPositionImageData() = 0;
@@ -44,16 +47,23 @@ namespace Fove
 		virtual bool IsEyeTracking() = 0;
 		virtual bool IsEyeTrackingReady() = 0;
 		virtual bool IsCalibrated() = 0;
+		virtual bool IsCalibrating() = 0;
+		virtual Fove::EFVR_Eye CheckEyesClosed() = 0;
 
 		//! motion sensor
 		virtual bool IsMotionReady() = 0;
-		virtual Fove::SFVR_HeadOrientation GetOrientation() = 0;
+		// Deprecated in v0.6.1 released 29th Aug 2016
+		virtual FVR_DEPRECATED(Fove::SFVR_HeadOrientation GetOrientation()) = 0;
 		virtual bool TareOrientationSensor() = 0;
 
 		//! position tracking
 		virtual bool IsPositionReady() = 0;
-		virtual Fove::SFVR_Pose GetPosition() = 0;
+		// Deprecated in v0.6.1 released 29th Aug 2016
+		virtual FVR_DEPRECATED(Fove::SFVR_Pose GetPosition()) = 0;
 		virtual bool TarePositionSensors() = 0;
+
+		virtual Fove::SFVR_Pose GetHMDPose() = 0;
+		virtual Fove::SFVR_Pose GetPoseByIndex(int id) = 0;
 
 		//! metrics
 		virtual SFVR_Matrix44 GetProjectionMatrixLH(EFVR_Eye whichEye, float zNear, float zFar) = 0;
@@ -65,7 +75,7 @@ namespace Fove
 		//! calibration
 		virtual void StartCalibration() = 0;
 		virtual SFVR_CalibrationTarget TickCalibration(float deltaTime) = 0;
-		virtual Fove::EFVR_ErrorCode ManualDriftCorrection(float x, float y, EFVR_Eye eye) = 0;
+		virtual Fove::EFVR_ErrorCode ManualDriftCorrection(float screenX, float screenY, EFVR_Eye eye) = 0;
 
 		//! constructor & destructor
 		virtual ~IFVRHeadset();

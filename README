@@ -4,13 +4,21 @@ Documentation is available on the wiki at https://github.com/FoveHMD/SDK/wiki an
 
 If you've found this and don't know who we are or why we're here please check out http://www.getfove.com/
 
-v0.6.0
+v0.6.1
 
-- New Bitmaps to reduce crashing
-- Bugfixes
-- Efficiency improvements
-- NVIDIA Direct Mode fixes
-- Position tracking improvements
-- New firmware support (v25)
-- Asynchronous Time Warp
-- Added CheckRuntimeVersion() function (returns EFVR_ErrorCode::Connect_WrongRuntimeVersion if incorrect)
+- Dropped support for VS2013
+- Improved position tracking robustness and performance
+- Support for ES2 hardware
+- New firmware support (v31)
+- In-firmware gyro calibration (no longer uses .calib files)
+- Support for multiple motion tracking objects
+- Now using VR-friendly 'Pose' data structure (instead of position + orientation)
+- New Function: GetPoseByIndex()
+- New Function: GetHMDPose()
+- Deprecated: GetPosition() (use GetHMDPose())
+- Deprecated: GetOrientation() (use GetHMDPose())
+- Deprecated: ManualDriftCorrection()
+- No longer using hidapi.dll
+- No longer using GazeTracking.dll
+- Distortion mesh improvements
+- Bug fixes
