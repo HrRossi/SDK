@@ -3,6 +3,15 @@
 #ifndef _FOVETYPES_H
 #define _FOVETYPES_H
 
+#ifdef __GNUC__
+#define FVR_DEPRECATED(func) func __attribute__ ((deprecated))
+#elif defined(_MSC_VER)
+#define FVR_DEPRECATED(func) __declspec(deprecated) func
+#else
+#pragma message("WARNING: You need to implement DEPRECATED for this compiler")
+#define FVR_DEPRECATED(func) func
+#endif
+
 #include <cstdint>
 #include <vector>
 
@@ -16,13 +25,17 @@ namespace Fove
 	/*! To be passed to the initialisation function of the client library to  */
 	enum class EFVR_ClientCapabilities
 	{
-		Gaze = 1,
-		Orientation = 2,
-		Position = 4
+		Gaze = 0x01,
+		Orientation = 0x02,
+		Position = 0x04
 	};
 	inline EFVR_ClientCapabilities operator|(EFVR_ClientCapabilities a, EFVR_ClientCapabilities b)
 	{
 		return static_cast<EFVR_ClientCapabilities>(static_cast<int>(a) | static_cast<int>(b));
+	}
+	inline EFVR_ClientCapabilities operator&(EFVR_ClientCapabilities a, EFVR_ClientCapabilities b)
+	{
+		return static_cast<EFVR_ClientCapabilities>(static_cast<int>(a) & static_cast<int>(b));
 	}
 
 	//! EFVR_ErrorCode enum
