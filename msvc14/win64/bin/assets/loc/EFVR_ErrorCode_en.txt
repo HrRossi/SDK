@@ -53,3 +53,10 @@ Position_NoDlibRegressor
 Position_NoCascadeClassifier
 Position_NoModel
 Position_NoImages
+Position_InvalidFile
+Position_NoCamParaSet
+Position_CantUpdateOptical
+Position_ObjectNotTracked
+
+Eye_Left_NoDlibRegressor
+Eye_Right_NoDlibRegressor
