@@ -4,21 +4,15 @@ Documentation is available on the wiki at https://github.com/FoveHMD/SDK/wiki an
 
 If you've found this and don't know who we are or why we're here please check out http://www.getfove.com/
 
-v0.6.1
+v0.6.2
 
-- Dropped support for VS2013
-- Improved position tracking robustness and performance
-- Support for ES2 hardware
-- New firmware support (v31)
-- In-firmware gyro calibration (no longer uses .calib files)
-- Support for multiple motion tracking objects
-- Now using VR-friendly 'Pose' data structure (instead of position + orientation)
-- New Function: GetPoseByIndex()
-- New Function: GetHMDPose()
-- Deprecated: GetPosition() (use GetHMDPose())
-- Deprecated: GetOrientation() (use GetHMDPose())
-- Deprecated: ManualDriftCorrection()
-- No longer using hidapi.dll
-- No longer using GazeTracking.dll
-- Distortion mesh improvements
+- Backwards compatibility for old interfaces
+- Memory optimizations
+- Support for new pose structure
+- Deprecated functions that rely on SFVR_HeadOrientation structure
+- Deprecated: DisableEyeTracking()
+- Deprecated: EnableEyeTracking()
+- Deprecated: GetVersion()
+- Deprecated: Submit(..., SFVR_HeadOrientation) (use Submit(..., SFVR_Pose))
+- Removed compositor heartbeat message
 - Bug fixes
