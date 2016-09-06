@@ -4,15 +4,11 @@ Documentation is available on the wiki at https://github.com/FoveHMD/SDK/wiki an
 
 If you've found this and don't know who we are or why we're here please check out http://www.getfove.com/
 
-v0.6.2
+v0.6.3
 
-- Backwards compatibility for old interfaces
-- Memory optimizations
-- Support for new pose structure
-- Deprecated functions that rely on SFVR_HeadOrientation structure
-- Deprecated: DisableEyeTracking()
-- Deprecated: EnableEyeTracking()
-- Deprecated: GetVersion()
-- Deprecated: Submit(..., SFVR_HeadOrientation) (use Submit(..., SFVR_Pose))
-- Removed compositor heartbeat message
+- Eye Closed detection
+- Compositor Auto-launch
+- Eye tracking enhancements
+- Position tracking display in Config Tool
 - Bug fixes
+- File cleanup

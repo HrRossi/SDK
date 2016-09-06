@@ -25,17 +25,13 @@ namespace Fove
 	/*! To be passed to the initialisation function of the client library to  */
 	enum class EFVR_ClientCapabilities
 	{
-		Gaze = 0x01,
-		Orientation = 0x02,
-		Position = 0x04
+		Gaze = 1,
+		Orientation = 2,
+		Position = 4
 	};
 	inline EFVR_ClientCapabilities operator|(EFVR_ClientCapabilities a, EFVR_ClientCapabilities b)
 	{
 		return static_cast<EFVR_ClientCapabilities>(static_cast<int>(a) | static_cast<int>(b));
-	}
-	inline EFVR_ClientCapabilities operator&(EFVR_ClientCapabilities a, EFVR_ClientCapabilities b)
-	{
-		return static_cast<EFVR_ClientCapabilities>(static_cast<int>(a) & static_cast<int>(b));
 	}
 
 	//! EFVR_ErrorCode enum
@@ -285,7 +281,7 @@ namespace Fove
 
 	//! EFVR_Eye enum
 	/*! This is usually returned with any eye tracking information and tells the client which eye(s) the information is based on. */
-	enum class EFVR_Eye : uint8_t
+	enum class EFVR_Eye
 	{
 		Neither = 0,
 		Left = 1,
