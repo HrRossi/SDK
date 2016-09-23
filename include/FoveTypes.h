@@ -25,13 +25,17 @@ namespace Fove
 	/*! To be passed to the initialisation function of the client library to  */
 	enum class EFVR_ClientCapabilities
 	{
-		Gaze = 1,
-		Orientation = 2,
-		Position = 4
+		Gaze = 0x01,
+		Orientation = 0x02,
+		Position = 0x04
 	};
 	inline EFVR_ClientCapabilities operator|(EFVR_ClientCapabilities a, EFVR_ClientCapabilities b)
 	{
 		return static_cast<EFVR_ClientCapabilities>(static_cast<int>(a) | static_cast<int>(b));
+	}
+	inline EFVR_ClientCapabilities operator&(EFVR_ClientCapabilities a, EFVR_ClientCapabilities b)
+	{
+		return static_cast<EFVR_ClientCapabilities>(static_cast<int>(a) & static_cast<int>(b));
 	}
 
 	//! EFVR_ErrorCode enum
@@ -99,7 +103,7 @@ namespace Fove
 	*/
 	enum class EFVR_DataType
 	{
-		HeadsetState = 0,	// headsetState -> SFVR_HeadsetState
+		HeadsetState = 0,	// headsetState -> SFVR_HeadsetState_2
 		Orientation = 1,	// headOrientation -> SFVR_HeadOrientation		// deprecated. replaced with Position entirely now (contains orientation AND estimated position)
 		Position = 2,		// pose -> SFVR_Positions						// updated from SFVR_Pose as that had no ability to hold predicted results
 		Gaze = 3,			// gaze -> SFVR_Gaze_2

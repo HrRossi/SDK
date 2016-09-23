@@ -13,6 +13,7 @@ namespace Fove
 		// members
 		// General
 		virtual bool Initialise() = 0;
+		virtual bool Initialise(EFVR_ClientCapabilities capabilities) = 0;
 		//! hardware connected
 		virtual bool IsHardwareConnected() = 0;
 		//! the hardware for their requested capabilities started
