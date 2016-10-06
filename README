@@ -4,6 +4,40 @@ Documentation is available on the wiki at https://github.com/FoveHMD/SDK/wiki an
 
 If you've found this and don't know who we are or why we're here please check out http://www.getfove.com/
 
+v0.7.2
+
+- Valid Code Certificates
+- Dropped 32-bit support
+- Better thread handling in compositor
+- Stability improvements
+- File cleanup
+
+v0.7.1
+
+- Barrel distortion compensation in eye tracking
+- Client DLL fixes
+
+v0.7.0
+
+- Preliminary Automatic Drift Correction
+- Position Tracking rotation range extended
+- Compositor background fix
+- Improved blink and pupil detection
+- File cleanup
+- Compositor messages cleanup, more detailed errors
+
+v0.6.5
+
+- Blink eye tracking upgrade
+- Wait for Render Pose
+- Position tracking upgrades
+- Backwards compatibility for old client interfaces
+- Compositor stability improvement
+- Compositor connection protocol adjustment
+- Frame limiting via shared memory
+- New Function: EFVR_CompositorError FVR_Compositor_SubmitAutoPose()
+- New Function: SFVR_Pose FVR_Compositor_WaitForRenderPose()
+
 v0.6.4
 
 - Runtime Service installation update
