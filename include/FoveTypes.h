@@ -5,19 +5,18 @@
 
 #ifdef __GNUC__
 #define FVR_DEPRECATED(func) func __attribute__ ((deprecated))
+#define FVR_EXPORT __attribute__((visibility("default")))
 #elif defined(_MSC_VER)
 #define FVR_DEPRECATED(func) __declspec(deprecated) func
+#define FVR_EXPORT __declspec(dllexport)
 #else
 #pragma message("WARNING: You need to implement DEPRECATED for this compiler")
 #define FVR_DEPRECATED(func) func
+#define FVR_EXPORT
 #endif
 
+#include <cmath>
 #include <cstdint>
-#include <vector>
-
-using std::int32_t;
-using std::uint32_t;
-using std::uint64_t;
 
 namespace Fove
 {
@@ -29,6 +28,7 @@ namespace Fove
 		Orientation = 0x02,
 		Position = 0x04
 	};
+
 	inline EFVR_ClientCapabilities operator|(EFVR_ClientCapabilities a, EFVR_ClientCapabilities b)
 	{
 		return static_cast<EFVR_ClientCapabilities>(static_cast<int>(a) | static_cast<int>(b));
@@ -112,6 +112,16 @@ namespace Fove
 		PositionImage = 6	// posImage -> SFVR_EyeImage
 	};
 
+	//! EFVR_ClientType
+	/*! Corresponds to the order in which clients are composited (Base, then Overlay, then Diagnostic) */
+	enum class EFVR_ClientType
+	{
+		Base = 0,
+		OverlayWorld = 0x10000,
+		OverlayScreen = 0x20000,
+		Diagnostic = 0x30000
+	};
+
 	//! SFVR_Quaternion struct
 	/*! A quaternion represents an orientation in 3d space.*/
 	struct SFVR_Quaternion
@@ -121,7 +131,7 @@ namespace Fove
 		float z = 0;
 		float w = 1;
 
-		SFVR_Quaternion() : x(0.f), y(0.f), z(0.f), w(1.f) {}
+		SFVR_Quaternion() = default;
 		SFVR_Quaternion(float ix, float iy, float iz, float iw) : x(ix), y(iy), z(iz), w(iw) {}
 
 		//! Generate and return a conjugate of this quaternion
@@ -132,7 +142,7 @@ namespace Fove
 
 		SFVR_Quaternion Normalize() const
 		{
-			float d = sqrtf(w*w + x*x + y*y + z*z);
+			float d = std::sqrt(w*w + x*x + y*y + z*z);
 			SFVR_Quaternion result(x / d, y / d, z / d, w / d);
 			return result;
 		}
@@ -167,25 +177,24 @@ namespace Fove
 		EFVR_ErrorCode error = EFVR_ErrorCode::None;
 		//! ID
 		/*! Incremental counter which tells if the coord captured is a fresh value at a given frame */
-		uint64_t id;
+		std::uint64_t id = 0;
 		//! Timestamp
 		/*! The time at which the coord was captured, based on system time */
-		uint64_t timestamp;
+		std::uint64_t timestamp = 0;
 		//! Quaternion
 		/*! The Quaternion which represents the orientation of the head. */
 		SFVR_Quaternion quat;
-
-		SFVR_HeadOrientation() : quat(0, 0, 0, 1){}
 	};
 
 	//! SFVR_Vec3 struct
 	/*! A vector that represents an position in 3d space. */
 	struct SFVR_Vec3
 	{
-		float x;
-		float y;
-		float z;
+		float x = 0;
+		float y = 0;
+		float z = 0;
 
+		SFVR_Vec3() = default;
 		SFVR_Vec3(float ix, float iy, float iz) : x(ix), y(iy), z(iz) {}
 	};
 
@@ -193,10 +202,10 @@ namespace Fove
 	/*! A vector that represents an position in 2d space. Usually used when refering to screen or image coordinates. */
 	struct SFVR_Vec2
 	{
-		float x;
-		float y;
+		float x = 0;
+		float y = 0;
 
-		SFVR_Vec2() : x(0), y(0) {}
+		SFVR_Vec2() = default;
 		SFVR_Vec2(float ix, float iy) : x(ix), y(iy) {}
 	};
 
@@ -211,18 +220,16 @@ namespace Fove
 		EFVR_ErrorCode error = EFVR_ErrorCode::None;
 		//! ID
 		/*! Incremental counter which tells if the coord captured is a fresh value at a given frame */
-		uint64_t id;
+		std::uint64_t id = 0;
 		//! Timestamp
 		/*! The time at which the coord was captured, based on system time */
-		uint64_t timestamp;
+		std::uint64_t timestamp = 0;
 		//! Quaternion
 		/*! The Quaternion which represents the orientation of the head. */
 		SFVR_Quaternion orientation;
 		//! Vector3
 		/*! The position of headset in 3D space */
 		SFVR_Vec3 position;
-
-		SFVR_Pose() : orientation(0, 0, 0, 1), position(0, 0, 0){}
 	};
 
 	//! SFVR_WorldGaze struct
@@ -232,14 +239,12 @@ namespace Fove
 	struct SFVR_WorldGaze
 	{
 		EFVR_ErrorCode error = EFVR_ErrorCode::None;
-		uint64_t id;
-		uint64_t timestamp;
-		float accuracy;
-		SFVR_Vec3 left_vec;
-		SFVR_Vec3 right_vec;
-		SFVR_Vec3 convergence;
-
-		SFVR_WorldGaze() : left_vec(0, 0, 1), right_vec(0, 0, 1), convergence(0, 0, 1) {}
+		std::uint64_t id = 0;
+		std::uint64_t timestamp = 0;
+		float accuracy = 0;
+		SFVR_Vec3 left_vec = { 0, 0, 1 };
+		SFVR_Vec3 right_vec = { 0, 0, 1 };
+		SFVR_Vec3 convergence = { 0, 0, 1 };
 	};
 
 	//! SFVR_GazeScreenCoord struct
@@ -251,10 +256,10 @@ namespace Fove
 		EFVR_ErrorCode error = EFVR_ErrorCode::None;
 		//! ID
 		/*! Incremental counter which tells if the coord captured is a fresh value at a given frame */
-		uint64_t id;
+		std::uint64_t id = 0;
 		//! Timestamp
 		/*! The time at which the coord was captured, based on system time */
-		uint64_t timestamp;
+		std::uint64_t timestamp = 0;
 		//! Vector2
 		/*! The Coordinate position is based on the Normalized 0,1 plane */
 		SFVR_Vec2 coord;
@@ -265,22 +270,22 @@ namespace Fove
 	struct SFVR_EyeImage
 	{
 		EFVR_ErrorCode error = EFVR_ErrorCode::None;
-		uint8_t eye;
-		uint64_t frameNumber;
-		uint32_t length;
-		uint64_t timestamp;
-		unsigned char* imageData;
+		std::uint8_t eye = 0;
+		std::uint64_t frameNumber = 0;
+		std::uint32_t length = 0;
+		std::uint64_t timestamp = 0;
+		unsigned char* imageData = nullptr;
 	};
 
 	//! SFVR_CalibrationTarget struct
 	/*! To be Moved to Fove Internal Types */
 	struct SFVR_CalibrationTarget
 	{
-		bool isCalibrationComplete;
-		float x;
-		float y;
-		float z;
-		float scale;
+		bool isCalibrationComplete = false;
+		float x = 0;
+		float y = 0;
+		float z = 0;
+		float scale = 0;
 	};
 
 	//! EFVR_Eye enum
@@ -297,14 +302,14 @@ namespace Fove
 	/*! A rectangular array of numbers, symbols, or expressions, arranged in rows and columns.  */
 	struct SFVR_Matrix44
 	{
-		float mat[4][4];
+		float mat[4][4] = {};
 	};
 
 	//! SFVR_Matrix34 struct
 	/*! A rectangular array of numbers, symbols, or expressions, arranged in rows and columns.  */
 	struct SFVR_Matrix34
 	{
-		float mat[3][4];
+		float mat[3][4] = {};
 	};
 
 	//! EFVR_CompositorError enum
@@ -345,15 +350,37 @@ namespace Fove
 		//! Texture Pointer
 		/*! D3D: Native texture pointer
 			OpenGL: Pointer to a texture ID */
-		void* pTexture;
-		EFVR_GraphicsAPI api;
+		void* pTexture = nullptr;
+		EFVR_GraphicsAPI api = EFVR_GraphicsAPI::DirectX;
 	};
 
 	//! SFVR_TextureBounds struct
 	/*! Coordinates in normalized space where 0 is left/top and 1 is bottom/right */
 	struct SFVR_TextureBounds
 	{
-		float left, top, right, bottom;
+		float left = 0, top = 0, right = 0, bottom = 0;
 	};
+
+	// Logging extensions to write common types to the fove log
+	class Log;
+	Log& operator << (Log&, EFVR_ClientCapabilities);
+	Log& operator << (Log&, EFVR_ErrorCode);
+	Log& operator << (Log&, EFVR_DataType);
+	Log& operator << (Log&, EFVR_ClientType);
+	Log& operator << (Log&, EFVR_Eye);
+	Log& operator << (Log&, EFVR_CompositorError);
+	Log& operator << (Log&, EFVR_GraphicsAPI);
+	Log& operator << (Log&, const SFVR_Quaternion&);
+	Log& operator << (Log&, const SFVR_HeadOrientation&);
+	Log& operator << (Log&, const SFVR_Vec3&);
+	Log& operator << (Log&, const SFVR_Vec2&);
+	Log& operator << (Log&, const SFVR_Pose&);
+	Log& operator << (Log&, const SFVR_WorldGaze&);
+	Log& operator << (Log&, const SFVR_GazeScreenCoord&);
+	Log& operator << (Log&, const SFVR_EyeImage&);
+	Log& operator << (Log&, const SFVR_CalibrationTarget&);
+	Log& operator << (Log&, const SFVR_Matrix44&);
+	Log& operator << (Log&, const SFVR_Matrix34&);
+	Log& operator << (Log&, const SFVR_TextureBounds&);
 }
 #endif // _FOVETYPES_H

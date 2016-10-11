@@ -80,7 +80,7 @@ namespace Fove
 		virtual ~IFVRCompositor() {}
 	};
 
-	__declspec(dllexport) IFVRCompositor* GetFVRCompositor();
+	FVR_EXPORT IFVRCompositor* GetFVRCompositor();
 }
 
 #endif // _IFVRCOMPOSITOR_H
